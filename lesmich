@@ -1,0 +1,13 @@
+upload git
+1º - git add .
+2º - git commit -m "feature:o que eu fiz ?"
+3º - git push -u origin master
+
+git add .&&git commit -m "feature:add-lesmich"&&git push -u origin master
+git add .;git commit -m "feature:add-lesmich";git push -u origin master
+####################################Observação
+feature - implementações novas
+fix - arrumar reestruturar o código organizar melhorar
+bug - concertar bugs
+
+esc tira tudo do terminal
