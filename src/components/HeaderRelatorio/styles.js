@@ -18,12 +18,20 @@ export const Header = styled.View`
   align-items: center;
 `;
 
+export const IconContainer = styled.View`
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+`;
+
 export const TopIcons = styled(Icons)`
   font-size: ${() => metrics.fontSize(10)};
   color: ${() => colors.white};
-
-  margin-left: 20px;
-  margin-right: 20px;
+  overflow: hidden;
+  position: absolute;
 `;
 
 export const Placeholder = styled(Icons)`

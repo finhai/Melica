@@ -32,7 +32,7 @@ export const IconContainer = styled.View`
   justify-content: center;
   align-items: center;
 
-  /* background: transparent; */
+  background: transparent;
 `;
 
 export const TopIcons = styled(Icons)`

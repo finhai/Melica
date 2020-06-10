@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import {Header, TopIcons, Title} from './styles';
+import {Header, TopIcons, Title, IconContainer} from './styles';
 
 export default function HeaderRelatorio({
   onChange,
@@ -21,13 +21,19 @@ export default function HeaderRelatorio({
   return (
     <>
       <Header AreaFlex>
-        <TopIcons name={left} onPress={navigate} />
+        <IconContainer>
+          <TopIcons name={left} onPress={navigate} />
+        </IconContainer>
         <Title>{title}</Title>
         {day ? (
-          <TopIcons name={middle} />
+          <IconContainer>
+            <TopIcons name={middle} />
+          </IconContainer>
         ) : (
           <>
-            <TopIcons name={right} onPress={showDatepicker} />
+            <IconContainer>
+              <TopIcons name={right} onPress={showDatepicker} />
+            </IconContainer>
             {show && (
               <DateTimePicker
                 locale="pt-BR"
