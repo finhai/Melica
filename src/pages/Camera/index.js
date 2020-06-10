@@ -8,10 +8,18 @@ import Products from '../../components/Products';
 import * as QrActions from '../../store/modules/qrdata/actions';
 import * as ProductsActions from '../../store/modules/products/actions';
 
-import {Container, Camera, Icon, Item} from './styles';
+import {
+  Container,
+  Camera,
+  Icon,
+  Item,
+  Errormsg,
+  ErrorDisplay,
+  ErrorSee,
+} from './styles';
 
-export default function QR() {
-  const {error, message} = useSelector(state => state.common);
+export default function QR({loadingColor, loadingSize}) {
+  const {loading, error, message} = useSelector(state => state.common);
   const {VenNro} = useSelector(state => state.relatorio);
   const {singleProduct} = useSelector(state => state.qr);
   const {cartProducts} = useSelector(state => state.cart);
@@ -23,14 +31,14 @@ export default function QR() {
   const [color, setColor] = useState(true);
 
   useEffect(() => {
-    if (qrdata !== 0) {
+    if (qrdata !== '') {
       dispatch(QrActions.requestProductInfo(qrdata));
       setTimeout(() => {
         if (Object.entries(singleProduct).length === 0) {
           setQrdata(0);
-          setProduct(false);
-        } else {
           setProduct(true);
+        } else {
+          setProduct(false);
         }
       }, 200);
     } else {
@@ -83,21 +91,37 @@ export default function QR() {
     }
   }
 
-  function functionChangeAmount(valueParam, totalItems) {
-    const newList = totalItems.map(items => {
-      if (totalItems.price === undefined) {
+  function functionChangeAmount(valueParam, indexParam, totalItems) {
+    const newList = totalItems.map((item, indexItem) => {
+      if (indexParam === indexItem) {
+        if (item.price === undefined) {
+          if (valueParam === '') {
+            return {
+              ...item,
+              amount: 1,
+              price: item.ProPreco,
+            };
+          }
+          return {
+            ...item,
+            amount: valueParam,
+            price: item.ProPreco,
+          };
+        }
+        if (valueParam === '') {
+          return {
+            ...item,
+            amount: 1,
+            price: item.price,
+          };
+        }
         return {
-          ...totalItems,
+          ...item,
           amount: valueParam,
-          price: totalItems.ProPreco,
+          price: item.price,
         };
       }
-
-      return {
-        ...totalItems,
-        amount: valueParam,
-        price: totalItems.price,
-      };
+      return item;
     });
 
     setFalseData(newList);
@@ -119,21 +143,39 @@ export default function QR() {
     );
   }
 
-  function functionChangePrice(valueParam, totalItems) {
-    const newList = totalItems.map(item => {
-      if (item.amount === undefined) {
+  function functionChangePrice(valueParam, indexParam, totalItems) {
+    const newList = totalItems.map((item, indexItem) => {
+      if (indexParam === indexItem) {
+        if (item.amount === undefined) {
+          if (valueParam === '') {
+            return {
+              ...item,
+              amoount: 1,
+              price: item.defaultvalue,
+            };
+          }
+          return {
+            ...item,
+            amount: 1,
+            price: valueParam,
+          };
+        }
+        if (valueParam === '') {
+          return {
+            ...item,
+            amoount: item.amount,
+            price: item.defaultvalue,
+          };
+        }
         return {
           ...item,
-          amount: 1,
+          amount: item.amount,
           price: valueParam,
         };
       }
-      return {
-        ...item,
-        amount: item.amount,
-        price: valueParam,
-      };
+      return item;
     });
+
     setFalseData(newList);
   }
 
@@ -146,6 +188,7 @@ export default function QR() {
   }
 
   function Smth() {
+    console.tron.log(product);
     if (product) {
       return (
         <Item>
@@ -164,7 +207,15 @@ export default function QR() {
         </Item>
       );
     }
-    return null;
+    if (error) {
+      return (
+        <ErrorDisplay>
+          <ErrorSee>
+            <Errormsg>{message}</Errormsg>
+          </ErrorSee>
+        </ErrorDisplay>
+      );
+    }
   }
 
   return (

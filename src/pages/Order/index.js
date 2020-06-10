@@ -55,6 +55,13 @@ export default function Pedido({loadingSize, loadingColor}) {
   const [qtd, setQtd] = useState('');
   const [refresh, setRefresh] = useState(false);
   const opacity = new Animated.Value(0);
+  const lengthAmount = cartProducts.map(item => {
+    return item.defaultQuantity;
+  });
+  const amount = lengthAmount.reduce(function(a, b) {
+    return a + b;
+  }, 0);
+  console.tron.log(amount);
 
   const {width} = Dimensions.get('window');
 
@@ -360,7 +367,7 @@ export default function Pedido({loadingSize, loadingColor}) {
         navigateMenu={() => navigation.goBack()}
         navigateFinal={() => choosePage()}
         navigateCamera={() => navigation.navigate('Camera')}
-        length={cartProducts.length}
+        length={amount}
       />
       {show ? (
         <>

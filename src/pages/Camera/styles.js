@@ -2,11 +2,13 @@
 import styled from 'styled-components/native';
 // import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {Dimensions} from 'react-native';
+import PropTypes from 'prop-types';
+
 import Icons from 'react-native-vector-icons/FontAwesome';
 import {RNCamera} from 'react-native-camera';
 import {colors, metrics} from '../../styles';
 
-const {height} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
@@ -43,3 +45,43 @@ export const Item = styled.View`
   height: 90px;
   background: ${colors.primary};
 `;
+
+export const Errormsg = styled.Text`
+  font-size: ${() => metrics.fontSize()};
+  font-weight: bold;
+  text-align: center;
+  color: ${() => colors.red};
+`;
+
+export const ErrorDisplay = styled.View`
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  height: 30px;
+  position: absolute;
+  width: ${(width / 8) * 8}px;
+  background: transparent;
+`;
+
+export const ErrorSee = styled.View`
+  width: 90%;
+  height: 30px;
+  background: ${() => colors.dark};
+`;
+
+export const Loading = styled.ActivityIndicator.attrs(props => {
+  return {
+    size: `${props.size}`,
+    color: `${props.color}`,
+  };
+})``;
+
+Loading.propTypes = {
+  size: PropTypes.string,
+  color: PropTypes.string,
+};
+Loading.defaultProps = {
+  size: 'small',
+  color: colors.white,
+};
