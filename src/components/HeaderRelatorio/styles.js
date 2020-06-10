@@ -21,6 +21,7 @@ export const Header = styled.View`
 export const TopIcons = styled(Icons)`
   font-size: ${() => metrics.fontSize(10)};
   color: ${() => colors.white};
+
   margin-left: 20px;
   margin-right: 20px;
 `;

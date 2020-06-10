@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {Header, TopIcons, Title} from './styles';
 
-export default function HeaderTitle({
+export default function HeaderRelatorio({
   onChange,
   showDatepicker,
   date,
@@ -45,7 +45,7 @@ export default function HeaderTitle({
   );
 }
 
-HeaderTitle.propTypes = {
+HeaderRelatorio.propTypes = {
   onChange: PropTypes.func,
   showDatepicker: PropTypes.func,
   date: PropTypes.object,
@@ -59,7 +59,7 @@ HeaderTitle.propTypes = {
   title: PropTypes.string,
 };
 
-HeaderTitle.defaultProps = {
+HeaderRelatorio.defaultProps = {
   onChange: () => {},
   showDatepicker: () => {},
   date: new Date(),

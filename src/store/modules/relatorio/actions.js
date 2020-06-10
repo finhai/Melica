@@ -49,12 +49,11 @@ export function ordersToday(page, date) {
   };
 }
 
-export function savedNumber(VenNro, showNumber, active) {
+export function savedNumber(VenNro, active) {
   return {
     type: '@report/REPORT_NR',
     payload: {
       VenNro,
-      showNumber,
       active,
     },
   };
@@ -74,5 +73,54 @@ export function definePage(relatorio) {
   return {
     type: '@report/DEFINE_PAGE',
     payload: {relatorio},
+  };
+}
+
+export function showAction(showNumber) {
+  return {
+    type: '@report/SHOW_ACTION',
+    payload: {showNumber},
+  };
+}
+
+export function blankVars(blankVenNro, blankChange) {
+  return {
+    type: '@report/BLANK_VARS',
+    payload: {
+      blankVenNro,
+      blankChange,
+    },
+  };
+}
+
+export function cartFull(total, cart, changePage) {
+  return {
+    type: '@relatorio/CART_FULL',
+    payload: {
+      total,
+      cart,
+      changePage,
+    },
+  };
+}
+
+export function allowPage(changePage) {
+  return {
+    type: '@relatorio/ALLOW_PAGE',
+    payload: {changePage},
+  };
+}
+
+export function failLoad(errorTrue) {
+  return {
+    type: '@relatorio/FAIL_LOAD',
+    payload: {errorTrue},
+  };
+}
+
+export function resetReport(relatorio, totalPages) {
+  return {
+    type: '@relatorio/RESET_REPORT',
+    payload: {relatorio, totalPages},
   };
 }

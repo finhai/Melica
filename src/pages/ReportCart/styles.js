@@ -88,6 +88,14 @@ export const Text = styled.Text`
   font-weight: bold;
 `;
 
+export const Errormsg = styled.Text`
+  font-size: ${() => metrics.fontSize()};
+  font-weight: bold;
+  text-align: center;
+
+  color: ${() => colors.red};
+`;
+
 export const Loading = styled.ActivityIndicator.attrs(props => {
   return {
     size: `${props.size}`,

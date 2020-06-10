@@ -12,6 +12,9 @@ import {
   Searchbar,
   IdButton,
   ButtonIcons,
+  IconContainer,
+  Count,
+  Counting,
 } from './styles';
 // corrigir
 export default function HeaderTitle({
@@ -26,13 +29,25 @@ export default function HeaderTitle({
   navigateFinal,
   navigateMenu,
   navigateCamera,
+  length,
 }) {
   return (
     <>
       <Header AreaFlex>
-        <TopIcons name="arrow-left" onPress={navigateMenu} />
+        <IconContainer>
+          <TopIcons name="arrow-left" onPress={navigateMenu} />
+        </IconContainer>
         <Title>Produtos</Title>
-        <TopIcons name="shopping-cart" onPress={navigateFinal} />
+        <IconContainer>
+          <TopIcons name="shopping-cart" onPress={navigateFinal} />
+          {length ? (
+            <Count name="circle">
+              <Counting>{length}</Counting>
+            </Count>
+          ) : (
+            <></>
+          )}
+        </IconContainer>
       </Header>
       <Header AreaFlex>
         <IdButton onPress={changeInput}>

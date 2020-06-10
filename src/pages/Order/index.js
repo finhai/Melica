@@ -53,6 +53,7 @@ export default function Pedido({loadingSize, loadingColor}) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [qtd, setQtd] = useState('');
+  const [refresh, setRefresh] = useState(false);
   const opacity = new Animated.Value(0);
 
   const {width} = Dimensions.get('window');
@@ -195,6 +196,18 @@ export default function Pedido({loadingSize, loadingColor}) {
         cartProducts
       )
     );
+  }
+
+  function refeshHandle() {
+    if (refresh) {
+      setRefresh(true);
+    } else if (query !== '') {
+      dispatch(ProductsActions.requestProductList(page, query));
+      setRefresh(false);
+    } else if (otherQuery !== '') {
+      dispatch(ProductsActions.requestIDProductList(otherQuery));
+      setRefresh(false);
+    }
   }
 
   function Footer() {
@@ -347,12 +360,15 @@ export default function Pedido({loadingSize, loadingColor}) {
         navigateMenu={() => navigation.goBack()}
         navigateFinal={() => choosePage()}
         navigateCamera={() => navigation.navigate('Camera')}
+        length={cartProducts.length}
       />
       {show ? (
         <>
           <FlatList
             style={{backgroundColor: '#fff', paddingBottom: 10}}
             keyboardDismissMode="none"
+            onRefresh={() => refeshHandle()}
+            refreshing={refresh}
             // style={{paddingBottom: 10}}
             initialNumToRender={10}
             onEndReachedThreshold={0.5}

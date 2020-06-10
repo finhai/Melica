@@ -2,9 +2,13 @@
 import styled from 'styled-components/native';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Icons from 'react-native-vector-icons/FontAwesome';
+import {Dimensions} from 'react-native';
+
 import {SearchBar} from 'react-native-elements';
 // eslint-disable-next-line no-unused-vars
 import {colors, metrics} from '../../styles';
+
+const {height, width} = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
@@ -13,6 +17,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   height: 60px;
+  width: ${(width / 8) * 8}px;
   background: ${() => colors.primary};
   flex-direction: row;
   /* justify-content: ${props =>
@@ -21,11 +26,21 @@ export const Header = styled.View`
   align-items: center;
 `;
 
+export const IconContainer = styled.View`
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+
+  /* background: transparent; */
+`;
+
 export const TopIcons = styled(Icons)`
   font-size: ${() => metrics.fontSize(10)};
   color: ${() => colors.white};
-  margin-left: 20px;
-  margin-right: 20px;
+  overflow: hidden;
+  position: absolute;
+  /* position: absolute; */
 `;
 
 export const ButtonIcons = styled(Icons)`
@@ -80,6 +95,24 @@ export const Input = styled.TextInput`
 export const Scroll = styled.ScrollView`
   flex: 1;
   padding-top: 5px;
+`;
+
+export const Count = styled.View`
+  width: 15px;
+  height: 15px;
+  border-radius: ${15 / 2}px;
+  background: ${() => colors.red};
+  margin-left: 15px;
+  margin-bottom: 15px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Counting = styled.Text`
+  font-size: ${() => metrics.fontSize(-3)};
+  color: ${() => colors.black};
+  text-align: center;
+  font-weight: bold;
 `;
 
 /* export const Camera = styled(RNCamera)`

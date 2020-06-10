@@ -7,7 +7,6 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Dimensions, Animated, BackHandler} from 'react-native';
 import * as LoginActions from '../../store/modules/login/actions';
 import * as ReportActions from '../../store/modules/relatorio/actions';
-import ButtonModal from '../../components/ButtonModal';
 
 import {
   Container,
@@ -33,7 +32,10 @@ import {colors} from '../../styles';
 export default function Menu() {
   const {loading} = useSelector(state => state.common);
   const {username} = useSelector(state => state.login);
-  const {VenNro, showNumber} = useSelector(state => state.relatorio);
+  const {cartProducts} = useSelector(state => state.cart);
+  const {VenNro, showNumber, blankVenNro, blankChange} = useSelector(
+    state => state.relatorio
+  );
   const message = '';
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -47,8 +49,17 @@ export default function Menu() {
   const {width} = Dimensions.get('window');
 
   function resetNumber() {
-    dispatch(ReportActions.savedNumber(0, false, false));
-    setModalVisible(false);
+    if (cartProducts.length !== 0) {
+      const activeChange = blankChange === 0;
+      dispatch(ReportActions.showAction(false));
+      dispatch(ReportActions.savedNumber(blankVenNro, activeChange));
+      dispatch(ReportActions.allowPage(true));
+    } else {
+      dispatch(ReportActions.allowPage(true));
+      dispatch(ReportActions.showAction(false));
+      dispatch(ReportActions.savedNumber(0, false));
+      setModalVisible(false);
+    }
   }
 
   useEffect(() => {
@@ -115,21 +126,22 @@ export default function Menu() {
   }, [animation]);
 
   function handleProducts() {
-    dispatch(ReportActions.savedNumber(0, false, false));
+    dispatch(ReportActions.savedNumber(0, false));
+    dispatch(ReportActions.showAction(false));
 
     navigation.navigate('Order');
   }
 
   function orderToday() {
-    dispatch(ReportActions.savedNumber(0, false, false));
-
+    dispatch(ReportActions.savedNumber(0, false));
+    dispatch(ReportActions.showAction(false));
     dispatch(ReportActions.reportDay(true));
     navigation.navigate('Report');
   }
 
   function orderAll() {
-    dispatch(ReportActions.savedNumber(0, false, false));
-
+    dispatch(ReportActions.savedNumber(0, false));
+    dispatch(ReportActions.showAction(false));
     dispatch(ReportActions.reportDay(false));
     navigation.navigate('Report');
   }

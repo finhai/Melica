@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import {useNavigation} from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
+import {colors} from '../../styles';
 import Header from '../../components/Header';
 import Logo from '../../components/Logo';
 import CartProducts from '../../components/CartProducts';
@@ -28,6 +29,8 @@ import {
   Finaliza,
   Text,
   IconAppearance,
+  Loading,
+  Errormsg,
 } from './styles';
 
 function HeaderView() {
@@ -42,7 +45,7 @@ function HeaderView() {
 
   function goBack() {
     dispatch(CartActions.resetCart());
-    navigation.navigate('Report');
+    navigation.goBack();
   }
 
   return (
@@ -70,7 +73,7 @@ function HeaderView() {
                 // eslint-disable-next-line no-undef
                 onPress={() => navigation.navigate('Camera')}
               />
-              <Text style={{color: '#fff'}}>Código de barras</Text>
+              <Text style={{color: '#fff'}}>Código</Text>
             </IconAppearance>
           </IconContainer>
         </OverContain>
@@ -81,22 +84,23 @@ function HeaderView() {
   );
 }
 
-export default function Finalizar() {
+export default function Finalizar({loadingSize, loadingColor}) {
   const {cartProducts} = useSelector(state => state.cart);
-  const {relatorio, VenNro, active} = useSelector(state => state.relatorio);
+  const {loading, message, error} = useSelector(state => state.common);
+
+  const {VenNro, active, errorTrue} = useSelector(state => state.relatorio);
 
   const [products, setProducts] = useState(cartProducts);
   const sumTotal = products.map(element => Number(element.Total));
   const finalSum = sumTotal.reduce((a, b) => a + b, 0);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [id, setId] = useState(relatorio.length);
   const animation = useState(new Animated.Value(0));
 
   function placeId() {
     Relatorio(finalSum, products);
-    navigation.goBack('');
     dispatch(CartActions.resetCart());
+    navigation.navigate('Menu');
   }
 
   function Relatorio(totalParam, cartParam) {
@@ -159,6 +163,19 @@ export default function Finalizar() {
     }
   }
 
+  function Footer() {
+    if (loading) {
+      return <Loading size={loadingSize} color={loadingColor} />;
+    }
+    if (errorTrue) {
+      return (
+        <Container>
+          <Errormsg>{message}</Errormsg>
+        </Container>
+      );
+    }
+  }
+
   function quantityFunction(text, item, index) {
     if (text === '') {
       const newArray = products.map(tems => ({...tems}));
@@ -192,6 +209,7 @@ export default function Finalizar() {
             keyExtractor={item => item.id}
             keyboardDismissMode="none"
             data={products}
+            ListFooterComponent={Footer()}
             renderItem={({item, index}) => (
               <CartProducts
                 editable={active}
@@ -227,3 +245,13 @@ export default function Finalizar() {
     </AllContain>
   );
 }
+
+Finalizar.propTypes = {
+  loadingSize: PropTypes.string,
+  loadingColor: PropTypes.string,
+};
+
+Finalizar.defaultProps = {
+  loadingSize: 'large',
+  loadingColor: colors.secundary,
+};

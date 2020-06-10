@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+
 import Icons from 'react-native-vector-icons/FontAwesome';
 import {color} from 'react-native-reanimated';
 import {colors, metrics} from '../../styles';
@@ -73,3 +75,26 @@ export const Icon = styled(Icons)`
   color: ${() => colors.black};
   font-size: ${() => metrics.fontSize(10)};
 `;
+
+export const Errormsg = styled.Text`
+  font-size: ${() => metrics.fontSize()};
+  font-weight: bold;
+  text-align: center;
+  color: ${() => colors.red};
+`;
+
+export const Loading = styled.ActivityIndicator.attrs(props => {
+  return {
+    size: `${props.size}`,
+    color: `${props.color}`,
+  };
+})``;
+
+Loading.propTypes = {
+  size: PropTypes.string,
+  color: PropTypes.string,
+};
+Loading.defaultProps = {
+  size: 'small',
+  color: colors.white,
+};

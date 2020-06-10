@@ -37,6 +37,7 @@ export const Title = styled.Text`
 export const Errormsg = styled.Text`
   font-size: ${() => metrics.fontSize()};
   font-weight: bold;
+  text-align: center;
   color: ${() => colors.red};
 `;
 

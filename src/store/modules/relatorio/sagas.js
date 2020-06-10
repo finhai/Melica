@@ -13,7 +13,14 @@ import api from '../../../services/api';
 // import AsyncStorage from '@react-native-community/async-storage';
 // import {CommonActions, NavigationContext} from '@react-navigation/native';
 // import {object} from 'prop-types';
-import {setReport, savedNumber, definePage} from './actions';
+import {
+  setReport,
+  savedNumber,
+  definePage,
+  showAction,
+  allowPage,
+  failLoad,
+} from './actions';
 import {dateTimeCountrySpecify} from '../../../utils/datetime';
 
 import {errorVerify} from '../../../utils';
@@ -51,18 +58,21 @@ function* Relatorio({payload: {total, cart}}) {
       data,
     });
 
-    yield put(savedNumber(VenNro, true, false));
+    yield put(savedNumber(VenNro, false));
+    yield put(showAction(true));
 
     yield put(commonSuccessAction(''));
   } catch (error) {
     const message = errorVerify(error);
-    yield put(savedNumber(message, true, false));
+    yield put(savedNumber(message, false));
+    yield put(showAction(true));
+
     yield put(commonFailureAction(message));
   }
 }
 
 function* refreshRelatorio({payload: {page, date}}) {
-  const newDate = dateTimeCountrySpecify('-3');
+  const newDate = dateTimeCountrySpecify('');
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
   );
@@ -124,12 +134,13 @@ function* refreshRelatorio({payload: {page, date}}) {
     yield put(commonSuccessAction(''));
   } catch (error) {
     const message = errorVerify(error);
+    yield put(failLoad(true));
     yield put(commonFailureAction(message));
   }
 }
 
 function* orderToday({payload: {page, date}}) {
-  const newDate = dateTimeCountrySpecify('-3');
+  const newDate = dateTimeCountrySpecify('');
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
   );
@@ -190,6 +201,8 @@ function* orderToday({payload: {page, date}}) {
     yield put(commonSuccessAction(''));
   } catch (error) {
     const message = errorVerify(error);
+    yield put(failLoad(true));
+
     yield put(commonFailureAction(message));
   }
 }
@@ -198,7 +211,7 @@ function* addReportPage({payload: {page, onDate}}) {
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
   );
-  const date = dateTimeCountrySpecify('-3');
+  const date = dateTimeCountrySpecify('');
   const dataString = date.toISOString();
   try {
     const {
@@ -227,8 +240,57 @@ function* addReportPage({payload: {page, onDate}}) {
     // }
   } catch (error) {
     const message = errorVerify(error);
+    yield put(failLoad(true));
+
     yield put(commonFailureAction(message));
     // erro de typagem no código
+  }
+}
+
+function* FullCart({payload: {total, cart, changePage}}) {
+  const date = new Date();
+  const name = JSON.parse(yield call(AsyncStorage.getItem, 'Melica@User_Key'));
+  const token = JSON.parse(
+    yield call(AsyncStorage.getItem, 'Melica@Token_Key')
+  );
+  const VendCod = JSON.parse(
+    yield call(AsyncStorage.getItem, 'Melica@Vendedor_Key')
+  );
+
+  const totalAmount = Number(total).toFixed(2);
+
+  try {
+    const data = cart.map(element => ({
+      ProGrupo: element.id,
+      ProGrupoDe: element.title.substring(0, 30),
+      ProPreco: Number(element.newValue),
+      quantity: Number(element.newQuantity),
+      ProGruN: element.grun,
+      Procod: element.code,
+    }));
+
+    const {
+      data: {VenNro},
+    } = yield call(api.post, `/sale`, {
+      token,
+      date,
+      VendCod,
+      name,
+      totalAmount: Number(totalAmount),
+      data,
+    });
+
+    yield put(savedNumber(VenNro, false));
+    yield put(showAction(true));
+    yield put(allowPage(true));
+
+    yield put(commonSuccessAction(''));
+  } catch (error) {
+    const message = errorVerify(error);
+    yield put(savedNumber(message, false));
+    yield put(showAction(true));
+
+    yield put(commonFailureAction(message));
   }
 }
 
@@ -237,4 +299,5 @@ export default all([
   takeLatest('@report/REFRESH_REPORT', refreshRelatorio),
   takeLatest('@report/ORDERS_TODAY', orderToday),
   takeLatest('@report/ADD_PAGE', addReportPage),
+  takeLatest('@relatorio/CART_FULL', FullCart),
 ]);

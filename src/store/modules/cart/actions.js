@@ -70,7 +70,7 @@ export function arrayTotal(total) {
   };
 }
 
-export function orderCart(order, page, date, change) {
+export function orderCart(order, page, date, change, old) {
   return {
     type: '@cart/LOAD_ORDER',
     payload: {
@@ -78,11 +78,12 @@ export function orderCart(order, page, date, change) {
       page,
       date,
       change,
+      old,
     },
   };
 }
 
-export function active(VenSitVen) {
+export function activeChange(VenSitVen) {
   return {
     type: '@cart/CART_ACTIVE',
     payload: {

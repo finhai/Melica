@@ -11,9 +11,9 @@ import {
   commonSuccessAction,
   commonFailureAction,
 } from '../common/actions';
-import {finalTotal, addSameProduct} from './actions';
+import {finalTotal, addSameProduct, activeChange} from './actions';
 import {errorVerify} from '../../../utils';
-import {savedNumber} from '../relatorio/actions';
+import {savedNumber, showAction, blankVars} from '../relatorio/actions';
 import {dateTimeCountrySpecify} from '../../../utils/datetime';
 import api from '../../../services/api';
 
@@ -53,7 +53,7 @@ function* arrayValue({payload: {total}}) {
   }
 }
 
-function* loadOrder({payload: {order, page, date, change}}) {
+function* loadOrder({payload: {order, page, date, change, old}}) {
   yield put(commonLoadingActivity(''));
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
@@ -90,10 +90,11 @@ function* loadOrder({payload: {order, page, date, change}}) {
       },
       {timeout: 1000}
     );
+
     const newProducts = products.map(item => {
       const total = item.VenValUni * item.VenQtde;
       return {
-        id: item.ProGrupo,
+        id: item.ProGrupo.toString(),
         title: item.VenGruDes,
         defaultValue: item.VenValUni,
         defaultQuantity: item.VenQtde,
@@ -106,9 +107,16 @@ function* loadOrder({payload: {order, page, date, change}}) {
       };
     });
     const active = change === 0;
-    yield put(savedNumber(order, false, active));
+    // yield put(showAction(false));
     yield put(addSameProduct(newProducts, totalPages));
-    yield put(commonSuccessAction(''));
+    yield put(activeChange(change));
+    if (old === 0 || old === undefined) {
+      yield put(savedNumber(order, active));
+      yield put(commonSuccessAction(''));
+    } else {
+      yield put(blankVars(order, active));
+      yield put(commonSuccessAction(''));
+    }
   } catch (error) {
     const message = errorVerify(error);
     yield put(commonFailureAction(message));
@@ -131,7 +139,7 @@ function* changeOrder({payload: {total, cart}}) {
     const data = cart.map(elements => {
       return {
         ProGrupo: elements.id.toString(),
-        ProGrupoDE: elements.title,
+        ProGrupoDe: elements.title.trim(),
         ProPreco: elements.newValue,
         VenQtde: elements.newQuantity,
         Procod: elements.code.toString(),
@@ -143,7 +151,7 @@ function* changeOrder({payload: {total, cart}}) {
       date: currentDate,
       VenData: savedDate,
       VenNro: order,
-      Ventot: total,
+      VenTot: total,
       data,
     });
     yield put(commonSuccessAction(''));
@@ -155,7 +163,8 @@ function* changeOrder({payload: {total, cart}}) {
 
 function* resetCart() {
   try {
-    yield put(savedNumber(0, false, false));
+    yield put(savedNumber(0, false));
+    yield put(showAction(false));
     yield put(commonSuccessAction(''));
   } catch (error) {
     const message = errorVerify(error);
