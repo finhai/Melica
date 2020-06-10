@@ -172,9 +172,9 @@ export default function Finalizar() {
     dispatch(CartActions.arrayTotal(newArrayParam));
   }
 
-  function previousTotalValue(qtdParam, priceParam, idParam, valueParam) {
-    dispatch(CartActions.newTotal(qtdParam, priceParam, idParam, valueParam));
-  }
+  // function previousTotalValue(qtdParam, priceParam, idParam, valueParam) {
+  //   dispatch(CartActions.newTotal(qtdParam, priceParam, idParam, valueParam));
+  // }
 
   function priceFunction(text, item, index) {
     if (text === '') {

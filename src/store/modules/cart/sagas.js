@@ -17,28 +17,28 @@ import {savedNumber, showAction, blankVars} from '../relatorio/actions';
 import {dateTimeCountrySpecify} from '../../../utils/datetime';
 import api from '../../../services/api';
 
-function* totalValue({payload: {qtd, price, id, currentValue}}) {
-  try {
-    const newValue = currentValue.map(element => {
-      const total = (qtd + element.defaultQuantity) * price;
-      if (element.id === id) {
-        return {
-          ...element,
-          newQuantity: qtd + element.defaultQuantity,
-          newValue: price,
-          Total: total,
-        };
-      }
+// function* totalValue({payload: {qtd, price, id, currentValue}}) {
+//   try {
+//     const newValue = currentValue.map(element => {
+//       const total = (qtd + element.defaultQuantity) * price;
+//       if (element.id === id) {
+//         return {
+//           ...element,
+//           newQuantity: qtd + element.defaultQuantity,
+//           newValue: price,
+//           Total: total,
+//         };
+//       }
 
-      return element;
-    });
-    // yield put(addSameProduct(newValue));
-    yield put(commonSuccessAction(''));
-  } catch (error) {
-    const message = errorVerify(error);
-    yield put(commonFailureAction(message));
-  }
-}
+//       return element;
+//     });
+//     // yield put(addSameProduct(newValue));
+//     yield put(commonSuccessAction(''));
+//   } catch (error) {
+//     const message = errorVerify(error);
+//     yield put(commonFailureAction(message));
+//   }
+// }
 
 function* arrayValue({payload: {total}}) {
   try {
@@ -173,7 +173,7 @@ function* resetCart() {
 }
 
 export default all([
-  takeLatest('@cart/NEW_TOTAL', totalValue),
+  // takeLatest('@cart/NEW_TOTAL', totalValue),
   takeLatest('@cart/ARRAY_TOTAL', arrayValue),
   takeLatest('@cart/LOAD_ORDER', loadOrder),
   takeLatest('@cart/CHANGE_ORDER', changeOrder),

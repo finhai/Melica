@@ -26,6 +26,7 @@ import {dateTimeCountrySpecify} from '../../../utils/datetime';
 import {errorVerify} from '../../../utils';
 
 function* Relatorio({payload: {total, cart}}) {
+  yield put(commonLoadingActivity('carregando...'));
   const date = new Date();
   const name = JSON.parse(yield call(AsyncStorage.getItem, 'Melica@User_Key'));
   const token = JSON.parse(
@@ -72,6 +73,7 @@ function* Relatorio({payload: {total, cart}}) {
 }
 
 function* refreshRelatorio({payload: {page, date}}) {
+  yield put(commonLoadingActivity('carregando...'));
   const newDate = dateTimeCountrySpecify('');
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
@@ -140,6 +142,8 @@ function* refreshRelatorio({payload: {page, date}}) {
 }
 
 function* orderToday({payload: {page, date}}) {
+  yield put(commonLoadingActivity('carregando...'));
+
   const newDate = dateTimeCountrySpecify('');
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
@@ -208,6 +212,8 @@ function* orderToday({payload: {page, date}}) {
 }
 
 function* addReportPage({payload: {page, onDate}}) {
+  yield put(commonLoadingActivity('carregando...'));
+
   const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
   );
@@ -248,6 +254,8 @@ function* addReportPage({payload: {page, onDate}}) {
 }
 
 function* FullCart({payload: {total, cart, changePage}}) {
+  yield put(commonLoadingActivity('carregando...'));
+
   const date = new Date();
   const name = JSON.parse(yield call(AsyncStorage.getItem, 'Melica@User_Key'));
   const token = JSON.parse(

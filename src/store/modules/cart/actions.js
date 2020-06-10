@@ -31,17 +31,17 @@ export function refreshCart(products) {
   };
 }
 
-export function newTotal(qtd, price, id, currentValue) {
-  return {
-    type: '@cart/NEW_TOTAL',
-    payload: {
-      qtd,
-      price,
-      id,
-      currentValue,
-    },
-  };
-}
+// export function newTotal(qtd, price, id, currentValue) {
+//   return {
+//     type: '@cart/NEW_TOTAL',
+//     payload: {
+//       qtd,
+//       price,
+//       id,
+//       currentValue,
+//     },
+//   };
+// }
 
 export function sumTotal(sum) {
   return {

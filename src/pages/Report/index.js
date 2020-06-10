@@ -44,13 +44,14 @@ export default function Pedido({loadingSize, loadingColor}) {
   const finalSum = sumTotal.reduce((a, b) => a + b, 0);
 
   function refeshHandle() {
+    setPage(1);
     if (refresh) {
       setRefresh(true);
     } else {
       if (today === true) {
-        dispatch(RelatorioActions.ordersToday(page, date));
+        dispatch(RelatorioActions.ordersToday(1, date));
       } else if (today !== true) {
-        dispatch(RelatorioActions.refreshRelatorio(page, date));
+        dispatch(RelatorioActions.refreshRelatorio(1, date));
       }
       setRefresh(false);
     }

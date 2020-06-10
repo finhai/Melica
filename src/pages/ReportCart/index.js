@@ -167,13 +167,6 @@ export default function Finalizar({loadingSize, loadingColor}) {
     if (loading) {
       return <Loading size={loadingSize} color={loadingColor} />;
     }
-    if (errorTrue) {
-      return (
-        <Container>
-          <Errormsg>{message}</Errormsg>
-        </Container>
-      );
-    }
   }
 
   function quantityFunction(text, item, index) {
