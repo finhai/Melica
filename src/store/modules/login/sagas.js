@@ -13,7 +13,7 @@ import {
   commonSuccessAction,
   commonFailureAction,
 } from '../common/actions';
-import {setLogin, setUser} from './actions';
+import {setLogin, setUser, checkConnection} from './actions';
 import {errorVerify} from '../../../utils';
 
 // eslint-disable-next-line no-unused-vars
@@ -60,8 +60,18 @@ function* userExist() {
   const VendedorCode = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Vendedor_Key')
   );
+  const date = dateTimeCountrySpecify('');
+
   try {
-    if (value !== null) {
+    if (
+      value !== null &&
+      user !== null &&
+      VendedorCode !== null &&
+      date !== null
+    ) {
+      // yield call(api.post, '/changeItens', {
+
+      // });
       yield put(setUser(value, user, VendedorCode));
       replace('Menu');
       yield put(commonSuccessAction(''));
@@ -91,8 +101,30 @@ function* logout() {
   }
 }
 
+function* firstTime() {
+  const didlogin = JSON.parse(
+    yield call(AsyncStorage.getItem, 'Melica@Login_Key')
+  );
+  try {
+    if (didlogin === null) {
+      yield call(
+        AsyncStorage.setItem,
+        'Melica@Login_Key',
+        JSON.stringify(true)
+      );
+      yield put(checkConnection(false));
+      yield put(commonSuccessAction(''));
+    } else if (didlogin) {
+    }
+  } catch (error) {
+    const message = errorVerify(error);
+    yield put(commonFailureAction(message));
+  }
+}
+
 export default all([
   takeLatest('@login/LOGIN_REQUEST', loginRequest),
   takeLatest('@login/REQUEST_USER_EXIST', userExist),
   takeLatest('@login/LOGOUT_USER', logout),
+  takeLatest('@login/FIRST_TIME', firstTime),
 ]);

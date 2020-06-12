@@ -48,3 +48,18 @@ export function setUser(token, username, VendCod) {
     },
   };
 }
+
+export function firstTime() {
+  return {
+    type: '@login/FIRST_TIME',
+  };
+}
+
+export function checkConnection(first) {
+  return {
+    type: '@login/CHECK_CONNECTION',
+    payload: {
+      first,
+    },
+  };
+}

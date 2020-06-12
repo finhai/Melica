@@ -255,7 +255,7 @@ export default function Finalizar() {
                 border={item.color}
                 color={item.color}
                 functionOnPress={() => deleteItem(item, index)}
-                title={item.title}
+                title={item.title.trim()}
                 item={item.defaultValue}
                 amount={item.defaultQuantity}
                 total={item.Total}

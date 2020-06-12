@@ -24,6 +24,7 @@ import ButtonModal from '../../components/ButtonModal';
 
 export default function Login() {
   const {loading, error, message} = useSelector(state => state.common);
+  const {first} = useSelector(state => state.login);
   const [userName, setUsername] = useState('');
   const [senha, setSenha] = useState('');
   const [typeConection, setTypeConection] = useState(true);
@@ -39,6 +40,15 @@ export default function Login() {
     dispatch(LoginActions.loginRequest(userName, senha));
     // dispatch(ProductsActions.requestProductList());
   }
+
+  useEffect(() => {
+    dispatch(LoginActions.firstTime());
+    if (first === true) {
+      setModalVisible(false);
+    } else {
+      setModalVisible(true);
+    }
+  }, [first]);
 
   useEffect(() => {
     dispatch(LoginActions.requestUserExist());

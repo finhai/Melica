@@ -57,11 +57,15 @@ export default function Pedido({loadingSize, loadingColor}) {
   const [refresh, setRefresh] = useState(false);
   const opacity = new Animated.Value(0);
   const lengthAmount = cartProducts.map(item => {
-    return item.defaultQuantity;
+    return Number(item.defaultQuantity);
   });
   const amount = lengthAmount.reduce(function(a, b) {
     return a + b;
   }, 0);
+
+  useEffect(() => {
+    console.tron.log('here', lengthAmount);
+  }, [cartProducts, lengthAmount]);
 
   const {width} = Dimensions.get('window');
 

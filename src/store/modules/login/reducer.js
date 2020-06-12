@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   password: '',
   users: [],
   VendCod: 0,
+  first: true,
 };
 
 export default function login(state = INITIAL_STATE, action) {
@@ -24,6 +25,10 @@ export default function login(state = INITIAL_STATE, action) {
         draft.token = action.payload.token;
         draft.username = action.payload.username;
         draft.VendCod = action.payload.VendCod;
+      });
+    case '@login/CHECK_CONNECTION':
+      return produce(state, draft => {
+        draft.first = action.payload.first;
       });
     default:
       return state;
