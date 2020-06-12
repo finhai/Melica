@@ -2,7 +2,14 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect} from 'react';
-import {FlatList, View, Platform, UIManager, BackHandler} from 'react-native';
+import {
+  FlatList,
+  View,
+  Platform,
+  UIManager,
+  BackHandler,
+  Keyboard,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -52,6 +59,11 @@ function HeaderView() {
     navigation.navigate('Order');
   }
 
+  function Camera() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.navigate('Camera');
+  }
+
   return (
     <>
       <HeaderReport
@@ -71,9 +83,9 @@ function HeaderView() {
               name="camera"
               style={{marginTop: 2}}
               // eslint-disable-next-line no-undef
-              onPress={() => navigation.navigate('Camera')}
+              onPress={() => Camera()}
             />
-            <Text style={{color: '#fff'}}>Código de barras</Text>
+            <Text style={{color: '#fff'}}>Código</Text>
           </IconAppearance>
         </IconContainer>
       </OverContain>
@@ -238,7 +250,7 @@ export default function Finalizar() {
   }
 
   return (
-    <AllContain>
+    <AllContain activeOpacity={1} onPress={Keyboard.dismiss}>
       <HeaderView />
       <Container>
         <OverContain2>

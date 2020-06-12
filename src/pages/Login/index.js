@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
+import {Keyboard} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
@@ -55,7 +56,7 @@ export default function Login() {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container activeOpacity={1} onPress={Keyboard.dismiss}>
       <Modal
         animationType="slide"
         transparent

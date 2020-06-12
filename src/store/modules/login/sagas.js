@@ -53,28 +53,35 @@ function* loginRequest({payload: {username, password}}) {
 
 function* userExist() {
   yield put(commonLoadingActivity(''));
-  const user = JSON.parse(yield call(AsyncStorage.getItem, 'Melica@User_Key'));
-  const value = JSON.parse(
+  const name = JSON.parse(yield call(AsyncStorage.getItem, 'Melica@User_Key'));
+  const token = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Token_Key')
   );
-  const VendedorCode = JSON.parse(
+  const venCod = JSON.parse(
     yield call(AsyncStorage.getItem, 'Melica@Vendedor_Key')
   );
-  const date = dateTimeCountrySpecify('');
+  const datenow = dateTimeCountrySpecify('');
+  const dateDay = datenow.getDate().toString();
+  const dateYear = datenow.getFullYear().toString();
+  const dateMonth = datenow.getMonth().toString();
+  const pad = '00';
+  const resultDay = (pad + dateDay).slice(-pad.length);
+  const resultMonth = (pad + dateMonth).slice(-pad.length);
+  const onDate = `${dateYear}-${resultMonth}-${resultDay}`;
 
   try {
-    if (
-      value !== null &&
-      user !== null &&
-      VendedorCode !== null &&
-      date !== null
-    ) {
-      // yield call(api.post, '/changeItens', {
-
-      // });
-      yield put(setUser(value, user, VendedorCode));
-      replace('Menu');
-      yield put(commonSuccessAction(''));
+    if (token !== null && name !== null && venCod !== null && onDate !== null) {
+      const {data} = yield call(api.post, '/requestDate', {
+        token,
+        name,
+        venCod,
+        onDate,
+      });
+      if (onDate >= data[0].UserHoraI || onDate <= data[0].UserHoraF) {
+        yield put(setUser(token, name, venCod));
+        replace('Menu');
+        yield put(commonSuccessAction(''));
+      }
     } else {
       yield put(commonFailureAction(''));
     }

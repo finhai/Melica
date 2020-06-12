@@ -9,7 +9,7 @@ import {colors, metrics} from '../../styles';
 // eslint-disable-next-line no-unused-vars
 const {height, width} = Dimensions.get('window');
 
-export const AllContain = styled.View`
+export const AllContain = styled.TouchableOpacity`
   flex: 1;
   background: ${() => colors.primary};
 `;

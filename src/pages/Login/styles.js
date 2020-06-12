@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles';
 
-export const Container = styled.KeyboardAvoidingView`
+export const Container = styled.TouchableOpacity`
   flex: 1;
   background: ${() => colors.primary};
   padding: 20px;

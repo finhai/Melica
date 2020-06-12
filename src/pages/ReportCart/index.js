@@ -1,7 +1,14 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect} from 'react';
-import {FlatList, View, Platform, UIManager, BackHandler} from 'react-native';
+import {
+  FlatList,
+  View,
+  Platform,
+  UIManager,
+  BackHandler,
+  Keyboard,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -205,7 +212,7 @@ export default function Finalizar({loadingSize, loadingColor}) {
   }
 
   return (
-    <AllContain>
+    <AllContain activeOpacity={1} onPress={Keyboard.dismiss}>
       <HeaderView />
       <Container>
         <OverContain2>

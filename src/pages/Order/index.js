@@ -63,9 +63,7 @@ export default function Pedido({loadingSize, loadingColor}) {
     return a + b;
   }, 0);
 
-  useEffect(() => {
-    console.tron.log('here', lengthAmount);
-  }, [cartProducts, lengthAmount]);
+  useEffect(() => {}, [cartProducts, lengthAmount]);
 
   const {width} = Dimensions.get('window');
 
