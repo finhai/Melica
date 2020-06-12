@@ -5,6 +5,7 @@ import {Platform} from 'react-native';
 // import {call, put, all, takeLatest, cancel} from 'redux-saga/effects';
 import {useNavigation} from '@react-navigation/native';
 import Products from '../../components/Products';
+import * as CommonActions from '../../store/modules/common/actions';
 import * as QrActions from '../../store/modules/qrdata/actions';
 import * as ProductsActions from '../../store/modules/products/actions';
 
@@ -181,14 +182,16 @@ export default function QR({loadingColor, loadingSize}) {
 
   function choosePage() {
     if (VenNro === 0) {
+      dispatch(CommonActions.resetLoadingActivity());
       navigation.navigate('Finalizar');
     } else {
+      dispatch(CommonActions.resetLoadingActivity());
+
       navigation.navigate('ReportCart');
     }
   }
 
   function Smth() {
-    console.tron.log(product);
     if (product) {
       return (
         <Item>
@@ -218,6 +221,11 @@ export default function QR({loadingColor, loadingSize}) {
     }
   }
 
+  function goBack() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.goBack();
+  }
+
   return (
     <>
       <Camera onBarCodeRead={barcode => setQrdata(barcode.data)}>
@@ -226,7 +234,7 @@ export default function QR({loadingColor, loadingSize}) {
       <Container>
         <Icon
           name="arrow-left"
-          onPress={() => navigation.goBack()}
+          onPress={() => goBack()}
           style={{marginLeft: 20}}
         />
         <Icon

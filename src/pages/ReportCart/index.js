@@ -12,6 +12,7 @@ import Header from '../../components/Header';
 import Logo from '../../components/Logo';
 import CartProducts from '../../components/CartProducts';
 import HeaderReport from '../../components/HeaderRelatorio';
+import * as CommonActions from '../../store/modules/common/actions';
 
 import * as RelatorioActions from '../../store/modules/relatorio/actions';
 import * as CartActions from '../../store/modules/cart/actions';
@@ -45,7 +46,20 @@ function HeaderView() {
 
   function goBack() {
     dispatch(CartActions.resetCart());
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.goBack();
+  }
+
+  function Order() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.navigate('Order');
+  }
+
+  function Camera() {
+    dispatch(CommonActions.resetLoadingActivity());
+
+    navigation.navigate('Camera');
   }
 
   return (
@@ -60,10 +74,7 @@ function HeaderView() {
         <OverContain>
           <IconContainer>
             <IconAppearance>
-              <Icon
-                name="search"
-                onPress={() => navigation.navigate('Order')}
-              />
+              <Icon name="search" onPress={() => Order()} />
               <Text style={{color: '#fff'}}>Procurar</Text>
             </IconAppearance>
             <IconAppearance>
@@ -71,7 +82,7 @@ function HeaderView() {
                 name="camera"
                 style={{marginTop: 2}}
                 // eslint-disable-next-line no-undef
-                onPress={() => navigation.navigate('Camera')}
+                onPress={() => Camera()}
               />
               <Text style={{color: '#fff'}}>Código</Text>
             </IconAppearance>
@@ -100,6 +111,8 @@ export default function Finalizar({loadingSize, loadingColor}) {
   function placeId() {
     Relatorio(finalSum, products);
     dispatch(CartActions.resetCart());
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.navigate('Menu');
   }
 

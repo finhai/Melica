@@ -268,6 +268,7 @@ function* addListProducts({payload: {page, search}}) {
     );
     yield put(errorMessage(false));
     yield put(commonSuccessAction(''));
+
     // }
   } catch (error) {
     const message = errorVerify(error);

@@ -10,6 +10,8 @@ import {useNavigation} from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import Header from '../../components/Header';
 import Logo from '../../components/Logo';
+import * as CommonActions from '../../store/modules/common/actions';
+
 import CartProducts from '../../components/CartProducts';
 import HeaderReport from '../../components/HeaderRelatorio';
 
@@ -38,6 +40,17 @@ function HeaderView() {
   const app = {
     backButtonDialog: false,
   };
+  const dispatch = useDispatch();
+
+  function goBack() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.goBack();
+  }
+
+  function Order() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.navigate('Order');
+  }
 
   return (
     <>
@@ -45,12 +58,12 @@ function HeaderView() {
         left="arrow-left"
         right=""
         middle=""
-        navigate={() => navigation.goBack()}
+        navigate={() => goBack()}
       />
       <OverContain>
         <IconContainer>
           <IconAppearance>
-            <Icon name="search" onPress={() => navigation.navigate('Order')} />
+            <Icon name="search" onPress={() => Order()} />
             <Text style={{color: '#fff'}}>Procurar</Text>
           </IconAppearance>
           <IconAppearance>
@@ -127,6 +140,8 @@ export default function Finalizar() {
 
   function placeId() {
     dispatch(RelatorioActions.requestRelatorio(finalSum, cartProducts));
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.navigate('Menu');
     dispatch(CartActions.resetCart());
   }

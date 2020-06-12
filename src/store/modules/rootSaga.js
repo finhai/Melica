@@ -1,5 +1,6 @@
 import {all} from 'redux-saga/effects';
 
+import common from './common/sagas';
 import login from './login/sagas';
 import menu from './menu/sagas';
 import products from './products/sagas';
@@ -9,6 +10,7 @@ import qr from './qrdata/sagas';
 
 export default function* rootSaga() {
   return yield all([
+    common,
     login,
     menu,
     products,

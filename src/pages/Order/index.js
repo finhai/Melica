@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {FlatList, Platform, Animated, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
+import * as CommonActions from '../../store/modules/common/actions';
 
 import * as ProductsActions from '../../store/modules/products/actions';
 import * as CartActions from '../../store/modules/cart/actions';
@@ -61,14 +62,15 @@ export default function Pedido({loadingSize, loadingColor}) {
   const amount = lengthAmount.reduce(function(a, b) {
     return a + b;
   }, 0);
-  console.tron.log(amount);
 
   const {width} = Dimensions.get('window');
 
   useEffect(() => {
     if (query !== '') {
-      setshow(true);
-      dispatch(ProductsActions.requestProductList(page, query));
+      if (query.length >= 3) {
+        setshow(true);
+        dispatch(ProductsActions.requestProductList(page, query));
+      }
     } else if (query === '') {
       setPage(1);
       setshow(false);
@@ -101,10 +103,10 @@ export default function Pedido({loadingSize, loadingColor}) {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    dispatch(ProductsActions.requestChangePage(page, query));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  // useEffect(() => {
+  //   dispatch(ProductsActions.requestChangePage(page, query));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [page]);
 
   useEffect(() => {
     setFalseData(products);
@@ -347,10 +349,22 @@ export default function Pedido({loadingSize, loadingColor}) {
 
   function choosePage() {
     if (VenNro === 0) {
+      dispatch(CommonActions.resetLoadingActivity());
       navigation.navigate('Finalizar');
     } else {
+      dispatch(CommonActions.resetLoadingActivity());
       navigation.navigate('ReportCart');
     }
+  }
+
+  function goBack() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.goBack();
+  }
+
+  function Camera() {
+    dispatch(CommonActions.resetLoadingActivity());
+    navigation.navigate('Camera');
   }
 
   return (
@@ -364,9 +378,9 @@ export default function Pedido({loadingSize, loadingColor}) {
         otherChangeText={text => setOtherQuery(text)}
         otherValue={otherQuery}
         changeInput={changeInput}
-        navigateMenu={() => navigation.goBack()}
+        navigateMenu={() => goBack()}
         navigateFinal={() => choosePage()}
-        navigateCamera={() => navigation.navigate('Camera')}
+        navigateCamera={() => Camera()}
         length={amount}
       />
       {show ? (

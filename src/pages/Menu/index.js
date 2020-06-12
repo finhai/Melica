@@ -5,6 +5,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {Dimensions, Animated, BackHandler} from 'react-native';
+import * as CommonActions from '../../store/modules/common/actions';
+
 import * as LoginActions from '../../store/modules/login/actions';
 import * as ReportActions from '../../store/modules/relatorio/actions';
 
@@ -128,6 +130,7 @@ export default function Menu() {
   function handleProducts() {
     dispatch(ReportActions.savedNumber(0, false));
     dispatch(ReportActions.showAction(false));
+    dispatch(CommonActions.resetLoadingActivity());
 
     navigation.navigate('Order');
   }
@@ -136,6 +139,8 @@ export default function Menu() {
     dispatch(ReportActions.savedNumber(0, false));
     dispatch(ReportActions.showAction(false));
     dispatch(ReportActions.reportDay(true));
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.navigate('Report');
   }
 
@@ -143,6 +148,8 @@ export default function Menu() {
     dispatch(ReportActions.savedNumber(0, false));
     dispatch(ReportActions.showAction(false));
     dispatch(ReportActions.reportDay(false));
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.navigate('Report');
   }
 

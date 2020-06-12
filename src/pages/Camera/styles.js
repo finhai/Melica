@@ -47,7 +47,7 @@ export const Item = styled.View`
 `;
 
 export const Errormsg = styled.Text`
-  font-size: ${() => metrics.fontSize()};
+  font-size: ${() => metrics.fontSize(+2)};
   font-weight: bold;
   text-align: center;
   color: ${() => colors.red};
@@ -66,8 +66,11 @@ export const ErrorDisplay = styled.View`
 
 export const ErrorSee = styled.View`
   width: 90%;
-  height: 30px;
-  background: ${() => colors.dark};
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: ${() => colors.darkTransparent};
 `;
 
 export const Loading = styled.ActivityIndicator.attrs(props => {

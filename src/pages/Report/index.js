@@ -13,6 +13,7 @@ import {Container, Loading, Errormsg} from './styles';
 import HeaderRelatorio from '../../components/HeaderRelatorio';
 import Relatorio from '../../components/Relatorio';
 import {dateTimeCountrySpecify} from '../../utils';
+import * as CommonActions from '../../store/modules/common/actions';
 import * as RelatorioActions from '../../store/modules/relatorio/actions';
 import * as CartActions from '../../store/modules/cart/actions';
 
@@ -65,12 +66,16 @@ export default function Pedido({loadingSize, loadingColor}) {
         dispatch(
           CartActions.orderCart(item.VenNro, 1, date, item.VenSitVen, VenNro)
         );
+        dispatch(CommonActions.resetLoadingActivity());
+
         navigation.navigate('ReportCart');
       }
     } else {
       dispatch(
         CartActions.orderCart(item.VenNro, 1, date, item.VenSitVen, VenNro)
       );
+      dispatch(CommonActions.resetLoadingActivity());
+
       navigation.navigate('ReportCart');
     }
     dispatch(RelatorioActions.allowPage(false));
@@ -150,6 +155,8 @@ export default function Pedido({loadingSize, loadingColor}) {
   function navigationHandle() {
     dispatch(RelatorioActions.failLoad(false));
     dispatch(RelatorioActions.resetReport([], 0));
+    dispatch(CommonActions.resetLoadingActivity());
+
     navigation.goBack();
   }
 

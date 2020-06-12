@@ -28,3 +28,9 @@ export function commonFailureAction(message) {
     },
   };
 }
+
+export function resetLoadingActivity() {
+  return {
+    type: '@common/RESET_ACTIVITY',
+  };
+}
